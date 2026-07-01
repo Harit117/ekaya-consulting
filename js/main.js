@@ -98,6 +98,46 @@
     });
   });
 
+  // Services accordion
+  var accItems = Array.prototype.slice.call(document.querySelectorAll(".acc-item"));
+  if (accItems.length) {
+    var setOpen = function (item, open) {
+      item.classList.toggle("open", open);
+      var head = item.querySelector(".acc-head");
+      if (head) head.setAttribute("aria-expanded", open ? "true" : "false");
+    };
+    accItems.forEach(function (item) {
+      var head = item.querySelector(".acc-head");
+      if (!head) return;
+      head.addEventListener("click", function () {
+        var isOpen = item.classList.contains("open");
+        accItems.forEach(function (other) { if (other !== item) setOpen(other, false); });
+        setOpen(item, !isOpen);
+      });
+    });
+
+    // Open a specific service from the #hash or the anchor chips
+    var openById = function (id, scroll) {
+      var target = document.getElementById(id);
+      if (!target || !target.classList.contains("acc-item")) return;
+      accItems.forEach(function (other) { setOpen(other, other === target); });
+      if (scroll) {
+        setTimeout(function () { target.scrollIntoView({ behavior: "smooth", block: "start" }); }, 60);
+      }
+    };
+    if (location.hash && location.hash.length > 1) openById(location.hash.slice(1), true);
+    document.querySelectorAll('.chips a[href^="#"]').forEach(function (a) {
+      a.addEventListener("click", function (ev) {
+        var id = a.getAttribute("href").slice(1);
+        if (document.getElementById(id)) {
+          ev.preventDefault();
+          openById(id, true);
+          history.replaceState(null, "", "#" + id);
+        }
+      });
+    });
+  }
+
   // Footer year
   var yr = document.getElementById("year");
   if (yr) yr.textContent = new Date().getFullYear();

@@ -445,6 +445,61 @@ h1, h2, h3, h4 { font-family: var(--ff-display); font-weight: 600; line-height: 
 .topic h4 { font-size: 19px; }
 
 /* ============================================================
+   SERVICES ACCORDION
+   ============================================================ */
+.accordion { display: grid; gap: 18px; }
+.acc-item {
+  border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper);
+  overflow: hidden; scroll-margin-top: 210px;
+  transition: box-shadow .35s, border-color .35s;
+}
+.acc-item.open { box-shadow: var(--shadow-md); border-color: rgba(214,171,82,.4); }
+.acc-head {
+  width: 100%; display: flex; align-items: center; gap: 20px; padding: 22px 26px;
+  background: none; border: 0; cursor: pointer; text-align: left; font-family: var(--ff-body);
+}
+.acc-num { flex: 0 0 auto; font-family: var(--ff-display); font-weight: 700; font-size: 17px;
+  background: var(--grad-gold); -webkit-background-clip: text; background-clip: text; color: transparent; width: 24px; }
+.acc-ic {
+  flex: 0 0 auto; width: 58px; height: 58px; border-radius: 15px; background: var(--grad-icon);
+  color: var(--gold-bright); display: grid; place-items: center;
+  box-shadow: inset 0 0 0 1px rgba(214,171,82,.18), 0 8px 18px rgba(10,24,48,.18);
+  transition: transform .4s var(--ease-back);
+}
+.acc-item.open .acc-ic, .acc-head:hover .acc-ic { transform: rotate(-4deg) scale(1.06); }
+.acc-ic svg { width: 27px; height: 27px; }
+.acc-titles { flex: 1 1 auto; min-width: 0; }
+.acc-title { display: block; font-family: var(--ff-display); font-size: 24px; font-weight: 600; color: var(--navy); line-height: 1.12; }
+.acc-sub { display: block; font-size: 14px; color: var(--muted); margin-top: 4px; }
+.acc-chevron {
+  flex: 0 0 auto; width: 42px; height: 42px; border-radius: 50%; background: var(--cream); color: var(--navy);
+  display: grid; place-items: center; transition: transform .4s var(--ease), background .35s, color .35s;
+}
+.acc-item.open .acc-chevron { transform: rotate(180deg); background: var(--grad-gold); color: #fff; }
+.acc-head:hover .acc-chevron { background: var(--gold-soft); }
+.acc-item.open .acc-head:hover .acc-chevron { background: var(--grad-gold); }
+.acc-chevron svg { width: 20px; height: 20px; }
+
+.acc-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .45s var(--ease); }
+.acc-item.open .acc-panel { grid-template-rows: 1fr; }
+.acc-panel-inner { overflow: hidden; }
+.acc-layout { display: grid; grid-template-columns: 0.92fr 1.08fr; gap: 36px; padding: 6px 26px 32px; align-items: start; }
+.acc-media { border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); align-self: stretch; min-height: 250px; }
+.acc-media img { width: 100%; height: 100%; min-height: 250px; object-fit: cover; display: block; transition: transform .7s var(--ease); }
+.acc-media:hover img { transform: scale(1.06); }
+.acc-body .svc-desc { margin-bottom: 20px; }
+.acc-body .btn { margin-top: 24px; }
+
+@media (max-width: 860px) {
+  .acc-layout { grid-template-columns: 1fr; gap: 22px; padding: 6px 20px 26px; }
+  .acc-media, .acc-media img { min-height: 200px; }
+  .acc-head { padding: 18px 20px; gap: 15px; }
+  .acc-num { display: none; }
+  .acc-ic { width: 50px; height: 50px; }
+  .acc-title { font-size: 20px; }
+}
+
+/* ============================================================
    CTA band
    ============================================================ */
 .cta {
