@@ -93,11 +93,8 @@
     counters.forEach(function (el) { cio.observe(el); });
   }
 
-  // Form handling — submits to Web3Forms (free, no backend needed).
-  // Enquiries are emailed to the address tied to this access key.
-  // To activate: paste the Web3Forms access key for sales@ekayaconsulting.com below.
-  var WEB3FORMS_KEY = "0f268caa-38d3-4524-a270-6de12735503d";
-
+  // Form handling — submits to submit.php (PHP mailer on the host, e.g. Hostinger).
+  // Enquiries are emailed to the recipients configured in submit.php.
   document.querySelectorAll("form[data-demo]").forEach(function (form) {
     form.addEventListener("submit", function (ev) {
       ev.preventDefault();
@@ -112,19 +109,13 @@
         if (errorEl) { errorEl.textContent = text; errorEl.classList.add("show"); }
       };
 
-      // Not configured yet — fail honestly instead of faking success.
-      if (!WEB3FORMS_KEY || WEB3FORMS_KEY.indexOf("REPLACE_") === 0) {
-        showError("This form isn't connected yet. Please email sales@ekayaconsulting.com or call +91 98982 81520.");
-        return;
+      var data = new FormData(form);
+      if (!data.get("subject")) {
+        data.append("subject", form.getAttribute("data-subject") || "New Website Enquiry — Ekaya Consulting");
       }
 
-      var data = new FormData(form);
-      data.append("access_key", WEB3FORMS_KEY);
-      data.append("subject", form.getAttribute("data-subject") || "New Website Enquiry — Ekaya Consulting");
-      data.append("from_name", "Ekaya Consulting Website");
-
       if (btn) { btn.disabled = true; btn.style.opacity = ".7"; }
-      fetch("https://api.web3forms.com/submit", {
+      fetch("submit.php", {
         method: "POST",
         headers: { "Accept": "application/json" },
         body: data
@@ -140,7 +131,7 @@
           }
         })
         .catch(function () {
-          showError("Network error. Please try again or email sales@ekayaconsulting.com.");
+          showError("Sorry, the form couldn't be sent. Please email sales@ekayaconsulting.com or call +91 98982 81520.");
         })
         .finally(function () {
           if (btn) { btn.disabled = false; btn.style.opacity = ""; }
