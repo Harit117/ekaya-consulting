@@ -70,7 +70,7 @@
 
       <!-- FORM -->
       <div class="reveal d1">
-        <form class="form-card" data-demo novalidate>
+        <form class="form-card" data-demo data-subject="New Website Enquiry — Contact Form" novalidate>
           <h3 style="font-size:24px;margin-bottom:6px">Send us a message</h3>
           <p style="color:var(--muted);font-size:15px;margin-bottom:22px">We typically respond within one business day.</p>
           <div class="form-grid">
@@ -94,14 +94,13 @@
               <label for="c-req">Requirement</label>
               <select id="c-req" name="requirement" required>
                 <option value="" disabled selected>Select a requirement</option>
-                <option>Workforce &amp; HR Solutions</option>
-                <option>Recruitment Solutions</option>
-                <option>Payroll &amp; Compliance</option>
+                <option>Talent Solutions</option>
+                <option>Workforce Management</option>
                 <option>Workforce Vendor Management</option>
-                <option>Facility Management</option>
+                <option>Integrated Facility Services</option>
                 <option>Business Development (BDSaaS)</option>
                 <option>Sales Process Consulting</option>
-                <option>Business Advisory</option>
+                <option>Business Advisory &amp; Consulting</option>
                 <option>Partnership Enquiry</option>
                 <option>Other</option>
               </select>
@@ -114,6 +113,7 @@
           <button type="submit" class="btn btn--gold" style="margin-top:20px">Submit
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
           <div class="form-success">Thank you for reaching out! Your message has been received and our team will respond shortly.</div>
+          <div class="form-error"></div>
         </form>
       </div>
     </div>

@@ -93,15 +93,58 @@
     counters.forEach(function (el) { cio.observe(el); });
   }
 
-  // Simple form handling (front-end demo)
+  // Form handling — submits to Web3Forms (free, no backend needed).
+  // Enquiries are emailed to the address tied to this access key.
+  // To activate: paste the Web3Forms access key for sales@ekayaconsulting.com below.
+  var WEB3FORMS_KEY = "0f268caa-38d3-4524-a270-6de12735503d";
+
   document.querySelectorAll("form[data-demo]").forEach(function (form) {
     form.addEventListener("submit", function (ev) {
       ev.preventDefault();
       if (!form.checkValidity()) { form.reportValidity(); return; }
-      var msg = form.querySelector(".form-success");
-      if (msg) { msg.classList.add("show"); }
-      form.reset();
-      if (msg) setTimeout(function () { msg.classList.remove("show"); }, 6000);
+      var success = form.querySelector(".form-success");
+      var errorEl = form.querySelector(".form-error");
+      var btn = form.querySelector('[type="submit"]');
+      if (success) success.classList.remove("show");
+      if (errorEl) errorEl.classList.remove("show");
+
+      var showError = function (text) {
+        if (errorEl) { errorEl.textContent = text; errorEl.classList.add("show"); }
+      };
+
+      // Not configured yet — fail honestly instead of faking success.
+      if (!WEB3FORMS_KEY || WEB3FORMS_KEY.indexOf("REPLACE_") === 0) {
+        showError("This form isn't connected yet. Please email sales@ekayaconsulting.com or call +91 98982 81520.");
+        return;
+      }
+
+      var data = new FormData(form);
+      data.append("access_key", WEB3FORMS_KEY);
+      data.append("subject", form.getAttribute("data-subject") || "New Website Enquiry — Ekaya Consulting");
+      data.append("from_name", "Ekaya Consulting Website");
+
+      if (btn) { btn.disabled = true; btn.style.opacity = ".7"; }
+      fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Accept": "application/json" },
+        body: data
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+          if (j && j.success) {
+            if (success) success.classList.add("show");
+            form.reset();
+            if (success) setTimeout(function () { success.classList.remove("show"); }, 8000);
+          } else {
+            showError((j && j.message) ? j.message : "Something went wrong. Please try again or email sales@ekayaconsulting.com.");
+          }
+        })
+        .catch(function () {
+          showError("Network error. Please try again or email sales@ekayaconsulting.com.");
+        })
+        .finally(function () {
+          if (btn) { btn.disabled = false; btn.style.opacity = ""; }
+        });
     });
   });
 
