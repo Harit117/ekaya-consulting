@@ -34,10 +34,17 @@
   });
 
   // Header shadow + progress + to-top on scroll
+  // Hysteresis: collapse only after scrolling past 110px, expand only when
+  // back above 60px. The dead-zone prevents rapid toggling and keeps the
+  // resize away from the very top, so it never flickers near the top.
   var header = document.querySelector(".site-header");
+  var headerCompact = false;
   var onScroll = function () {
     var y = window.scrollY;
-    if (header) header.classList.toggle("scrolled", y > 12);
+    if (header) {
+      if (!headerCompact && y > 110) { headerCompact = true; header.classList.add("scrolled"); }
+      else if (headerCompact && y < 60) { headerCompact = false; header.classList.remove("scrolled"); }
+    }
     var h = document.documentElement.scrollHeight - window.innerHeight;
     progress.style.width = (h > 0 ? (y / h) * 100 : 0) + "%";
     toTop.classList.toggle("show", y > 500);
