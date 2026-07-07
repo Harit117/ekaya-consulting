@@ -26,7 +26,7 @@
 - **Large logo** — 177px tall, centered in header with no text beside it
 
 ### Contact Information
-- **Address:** Shivganga, Nr. Kalasagar Mall, Ghatlodia, Ahmedabad – 380061
+- **Address:** Ahmedabad, India
 - **Phone:** +91 98982 81520
 - **Email:** sales@ekayaconsulting.com
 
